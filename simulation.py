@@ -263,55 +263,38 @@ def get_sources(
         return sources
 
 def parse_port_eigenmode_coeff(
-    port_out: str, sim_data: td.SimulationData, sim: td.Simulation
+    port_name: str, component: ComponentSpec, sim_data: td.SimulationData, mode_index: int=0
 ) -> Tuple[np.ndarray]:
     """Given a port and eigenmode coefficient result, returns the coefficients \
     relative to whether the wavevector is entering or exiting simulation.
 
     """
-    # Direction of port (pointing away from the simulation)
-    # Figure out if that is exiting the simulation or not
-    # depending on the port orientation (assuming it's near PMLs)
-
-    orientation = sim.ports[port_out].orientation
-
-    if orientation in [0, 90]:  # east
-        direction_inp = "-"
-        direction_out = "+"
-    elif orientation in [180, 270]:  # west
-        direction_inp = "+"
-        direction_out = "-"
-    else:
-        raise ValueError(
-            "Port orientation = {orientation} is not 0, 90, 180, or 270 degrees"
-        )
-
-    coeff_inp = sim_data.monitor_data[port_out].amps.sel(direction=direction_inp)
-    coeff_out = sim_data.monitor_data[port_out].amps.sel(direction=direction_out)
+    sim = sim_data.simulation
+    orientation = component.ports[port_name].orientation
+    direction_inp = "-"
+    direction_out = "-"
+    coeff_inp = sim_data.monitor_data[f"mode_{port_name}"].amps.sel(direction = direction_inp, mode_index=mode_index)
+    coeff_out = sim_data.monitor_data[f"mode_{port_name}"].amps.sel(direction = direction_out, mode_index=mode_index)
     return coeff_inp.values.flatten(), coeff_out.values.flatten()
 
 def get_wavelengths(port_name: str, sim_data: td.SimulationData) -> np.ndarray:
-    coeff_inp = sim_data.monitor_data[port_name].amps.sel(direction="+")
+    coeff_inp = sim_data.monitor_data[f"mode_{port_name}"].amps.sel(direction="+")
     freqs = coeff_inp.f
     return td.constants.C_0 / freqs.values
 
-def get_sparam(port_out: str,
-               sim_data: td.SimulationData,
-               sim: td.Simulation
+def get_sparam(port_out: str, component: ComponentSpec, sim_data: td.SimulationData, mode_index = 0
 ) -> np.ndarray:
-    sp={}
-    port_name_source = sim.sources[0]
+    sim = sim_data.simulation
+    port_name_source = sim.sources[0].name
     source_entering, source_exiting = parse_port_eigenmode_coeff(
-            port_name=port_name_source, sim = sim, sim_data=sim_data
+            port_name=port_name_source, component=component, sim_data=sim_data, mode_index = mode_index
         )
     
     monitor_entering, monitor_exiting = parse_port_eigenmode_coeff(
-                port_name=port_out, sim = sim, sim_data=sim_data
+                port_name=port_out,  component=component, sim_data=sim_data, mode_index = mode_index
             )
     sij = monitor_exiting / source_entering
-    key = "sij"
-    sp[key] = sij
-    sp["wavelengths"] = get_wavelengths(port_name=port_out, sim_data=sim_data)
 
-    return sp
+
+    return sij
     
