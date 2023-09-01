@@ -9,4 +9,4 @@ By changing the source port, multiple simulations can be combined to create the 
 [View My Notebook output](https://edieussa.github.io/multibeam_fshifter/multibeam_fshifter.html)
 
 (Below,a cool image of the simulation of the star coupler with the source)
-[simulation_image](https://github.com/edieussa/multibeam_fshifter/images/simulation_image.png)
+![simulation_image](images/simulation_image.png)
