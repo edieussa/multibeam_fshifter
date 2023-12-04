@@ -12,3 +12,5 @@ By changing the source port, multiple simulations can be combined to create the 
 
 (Below,a cool image of the simulation of the star coupler with the source)
 ![simulation_image](images/simulation_image.png)
+
+One application of this component is to create a scalable architecture for some photonic integrated circuit-based sensing applications. An example can be found in the following notebook: [Scalable architecture for LDV](https://edieussa.github.io/multibeam_fshifter/multibeam_architectures.html)
