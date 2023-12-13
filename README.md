@@ -1,5 +1,5 @@
 # multibeam frequency shifter
-multibeam frequency shifter  - [link to the paper](https://doi.org/10.1364/OE.498792)
+Design and simulation of invented photonic component: multibeam frequency shifter  - [link to the paper](https://doi.org/10.1364/OE.498792)
 
 [View My Notebook output](https://edieussa.github.io/multibeam_fshifter/multibeam_fshifter.html)
 
