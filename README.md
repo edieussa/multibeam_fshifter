@@ -14,3 +14,5 @@ By changing the source port, multiple simulations can be combined to create the 
 ![simulation_image](images/simulation_image.png)
 
 One application of this component is to create a scalable architecture for some photonic integrated circuit-based sensing applications. An example can be found in the following notebook: [Scalable architecture for LDV](https://edieussa.github.io/multibeam_fshifter/multibeam_architectures.html)
+
+[link to related patent](https://patents.google.com/patent/US20240168223A1/)
